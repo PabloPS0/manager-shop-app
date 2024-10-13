@@ -9,7 +9,7 @@ cursor = conn.cursor()
 
 cursor.execute('''CREATE TABLE produtos(
 code INTEGER PRIMARY KEY AUTOINCREMENT,
-nome TEXT,
+name TEXT,
 price REAL,
 quantity INTEGER 
 )''')

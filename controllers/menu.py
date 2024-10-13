@@ -25,10 +25,10 @@ class Menu:
     def add_product(self):
         print('-- ADICIONAR PRODUTO --')
         
-        nome = input('Nome: ')
+        name = input('Nome: ')
         price = float(input('Preço: '))
         quantity = int(input('Quantidade: '))
-        self.product_repository.add(nome, price, quantity)
+        self.product_repository.add(name, price, quantity)
 
     def list_products(self):
         print('-- LISTAR PRODUTOS --')
