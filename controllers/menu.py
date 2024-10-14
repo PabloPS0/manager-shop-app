@@ -11,7 +11,8 @@ class Menu:
             print("1. Add item")
             print("2. List item")
             print("3. Delete item")
-            print("4. Exit")
+            print("4. Search item")
+            print("5. Exit")
             option = int(input('Digite: '))
             match option:
                 case 1:
@@ -21,6 +22,8 @@ class Menu:
                 case 3:
                     self.delete_product()
                 case 4:
+                    self.search_product()
+                case 5:
                     break
                 case _:
                     print('Opção Inválida')   
@@ -45,4 +48,13 @@ class Menu:
             self.product_repository.delete(code)
             print(f"Produto com código {code} deletado com sucesso.")
         except ProductNotFoundError as e:
+            print(e)
+
+    def search_product(self):
+        print('-- BUSCAR PRODUTO --')
+        code = input('Código: ')
+        try:
+            product = self.product_repository.search(code)
+            print(product)
+        except  ProductNotFoundError as e:
             print(e)

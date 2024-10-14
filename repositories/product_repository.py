@@ -19,12 +19,17 @@ class ProductRepository:
         results = self.cursor.fetchall()
         return results
     def delete(self, code):
-        select_item = self.cursor.execute("SELECT * FROM produtos WHERE code = ?", (code)).fetchone()
+        select_item = self.cursor.execute("SELECT * FROM produtos WHERE code = ?", (code,)).fetchone()
         if select_item:
-            self.cursor.execute("DELETE FROM produtos WHERE code = ?", (code))
+            self.cursor.execute("DELETE FROM produtos WHERE code = ?", (code,))
             self.conn.commit()
         else:
             raise ProductNotFoundError(f"Produto com código {code} não encontrado.")
+    def search(self, code):
+        product = self.cursor.execute("SELECT * FROM produtos WHERE code = ?", (code,)).fetchone()
+        if product is None:
+            raise ProductNotFoundError(f"Produto com código {code} não encontrado.")
+        return product
     def close_connection(self):
         # Método para fechar a conexão quando necessário
         self.conn.close()
