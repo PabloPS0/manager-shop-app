@@ -30,6 +30,12 @@ class ProductRepository:
         if product is None:
             raise ProductNotFoundError(f"Produto com código {code} não encontrado.")
         return product
+    def update(self, name, price, quantity, code):
+        product = self.cursor.execute("UPDATE produtos SET name = ?, price = ?, quantity = ? WHERE code = ?", (name, price, quantity, code))
+        self.conn.commit()
+        if self.cursor.rowcount == 0:
+            raise ProductNotFoundError(f"Produto com código {code} não encontrado para atualização.")
+        return f"Produto com código {code} atualizado com sucesso."
     def close_connection(self):
         # Método para fechar a conexão quando necessário
         self.conn.close()
