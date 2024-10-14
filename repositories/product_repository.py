@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 load_dotenv()
 DATABASE_PATH = os.getenv('DATABASE_PATH')
 
+class ProductNotFoundError(Exception):
+    pass
+
 class ProductRepository:
     def __init__(self):
         self.conn = sqlite3.connect(DATABASE_PATH) 
@@ -15,5 +18,13 @@ class ProductRepository:
         self.cursor.execute('''SELECT * FROM produtos''')
         results = self.cursor.fetchall()
         return results
-    def delete(self, name, price, quantity):
-        self.cursor.execute('''DELETE FROM produtos WHERE nome = ? AND price = ? AND quantity = ?''')
+    def delete(self, code):
+        select_item = self.cursor.execute("SELECT * FROM produtos WHERE code = ?", (code)).fetchone()
+        if select_item:
+            self.cursor.execute("DELETE FROM produtos WHERE code = ?", (code))
+            self.conn.commit()
+        else:
+            raise ProductNotFoundError(f"Produto com código {code} não encontrado.")
+    def close_connection(self):
+        # Método para fechar a conexão quando necessário
+        self.conn.close()
